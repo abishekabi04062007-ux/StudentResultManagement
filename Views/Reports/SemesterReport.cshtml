@@ -1,0 +1,55 @@
+@model IEnumerable<StudentResultManagement.Models.Student>
+@{
+    ViewData["Title"] = "Semester Report";
+}
+<h1>Semester Report</h1>
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col">
+            <input type="text" name="department" class="form-control" placeholder="Department" />
+        </div>
+        <div class="col">
+            <input type="number" name="year" class="form-control" placeholder="Year" />
+        </div>
+        <div class="col">
+            <input type="number" name="semester" class="form-control" placeholder="Semester" />
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Reg Number</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Total Marks</th>
+            <th>Overall Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            var total = student.Marks.Sum(m => m.Total);
+            var isPass = student.Marks.Any() && student.Marks.All(m => m.ResultStatus == "PASS");
+            <tr>
+                <td>@student.RegisterNumber</td>
+                <td>@student.Name</td>
+                <td>@student.Department</td>
+                <td>@total</td>
+                <td>@(isPass ? "PASS" : "FAIL")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button onclick="window.print()" class="btn btn-secondary mt-3 d-print-none">Print Report</button>
+<style>
+@@media print {
+    .d-print-none, form {
+        display: none !important;
+    }
+}
+</style>

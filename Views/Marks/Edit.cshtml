@@ -1,0 +1,60 @@
+@model StudentResultManagement.Models.Mark
+@{
+    ViewData["Title"] = "Edit Marks";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-pencil"></i> Edit Marks</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body">
+        <form asp-action="Edit">
+<input type="hidden" asp-for="MarkId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 alert alert-danger"></div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="StudentId" class="form-label">Student</label>
+                    <select asp-for="StudentId" class="form-select" asp-items="ViewBag.StudentId">
+                        <option value="">-- Select Student --</option>
+                    </select>
+                    <span asp-validation-for="StudentId" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="SubjectId" class="form-label">Subject</label>
+                    <select asp-for="SubjectId" class="form-select" asp-items="ViewBag.SubjectId">
+                        <option value="">-- Select Subject --</option>
+                    </select>
+                    <span asp-validation-for="SubjectId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="InternalMark" class="form-label">Internal Mark (0-30)</label>
+                    <input asp-for="InternalMark" class="form-control" type="number" min="0" max="30" />
+                    <span asp-validation-for="InternalMark" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ExternalMark" class="form-label">External Mark (0-70)</label>
+                    <input asp-for="ExternalMark" class="form-control" type="number" min="0" max="70" />
+                    <span asp-validation-for="ExternalMark" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-3">
+                <i class="bi bi-info-circle"></i> Total, Grade, and Result Status will be automatically calculated upon saving.
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save"></i> Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,38 @@
+@model IEnumerable<StudentResultManagement.Models.Student>
+@{
+    ViewData["Title"] = "Results";
+}
+<h1>Results</h1>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name or register number: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Register Number</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.RegisterNumber</td>
+            <td>@item.Name</td>
+            <td>@item.Department</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-info btn-sm">View Result</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

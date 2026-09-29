@@ -1,0 +1,63 @@
+@model IEnumerable<StudentResultManagement.Models.Subject>
+@{
+    ViewData["Title"] = "Subjects";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-book"></i> Subjects Directory</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Subject</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card card-custom">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+                No subjects found.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Semester</th>
+                            <th>Credits</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td class="fw-bold">@item.SubjectCode</td>
+                                <td>@item.SubjectName</td>
+                                <td><span class="badge bg-primary">@item.Department</span></td>
+                                <td>@item.Year</td>
+                                <td>@item.Semester</td>
+                                <td>@item.Credits</td>
+                                <td class="text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.SubjectId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.SubjectId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

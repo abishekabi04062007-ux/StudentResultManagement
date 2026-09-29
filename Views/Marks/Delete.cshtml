@@ -1,0 +1,52 @@
+@model StudentResultManagement.Models.Mark
+@{
+    ViewData["Title"] = "Delete Marks";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-trash text-danger"></i> Delete Marks</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+</div>
+
+<div class="alert alert-warning">
+    <h4><i class="bi bi-exclamation-triangle"></i> Are you sure you want to delete these marks?</h4>
+    <p>This action cannot be undone.</p>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Student</dt>
+            <dd class="col-sm-9">@Model.Student?.RegisterNumber - @Model.Student?.Name</dd>
+            
+            <dt class="col-sm-3">Subject</dt>
+            <dd class="col-sm-9">@Model.Subject?.SubjectCode - @Model.Subject?.SubjectName</dd>
+            
+            <dt class="col-sm-3">Internal / External</dt>
+            <dd class="col-sm-9">@Model.InternalMark / @Model.ExternalMark</dd>
+            
+            <dt class="col-sm-3">Total</dt>
+            <dd class="col-sm-9 fw-bold">@Model.Total</dd>
+            
+            <dt class="col-sm-3">Grade</dt>
+            <dd class="col-sm-9"><span class="badge bg-secondary">@Model.Grade</span></dd>
+            
+            <dt class="col-sm-3">Result</dt>
+            <dd class="col-sm-9">
+                @if(Model.ResultStatus == "PASS")
+                {
+                    <span class="badge bg-success">PASS</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">FAIL</span>
+                }
+            </dd>
+        </dl>
+        
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="MarkId" />
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Confirm Delete</button>
+        </form>
+    </div>
+</div>

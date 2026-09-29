@@ -1,0 +1,166 @@
+@model StudentResultManagement.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Admin Dashboard</h2>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card card-custom stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-primary me-3"><i class="bi bi-people-fill"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Total Students</h6>
+                    <h3 class="card-title mb-0">@Model.TotalStudents</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-primary me-3"><i class="bi bi-book-half"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Total Subjects</h6>
+                    <h3 class="card-title mb-0">@Model.TotalSubjects</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom stat-card success h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-success me-3"><i class="bi bi-check-circle-fill"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Passed Students</h6>
+                    <h3 class="card-title mb-0">@Model.PassedStudents</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-custom stat-card danger h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-danger me-3"><i class="bi bi-x-circle-fill"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Failed Students</h6>
+                    <h3 class="card-title mb-0">@Model.FailedStudents</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card card-custom h-100">
+            <div class="card-header bg-white"><i class="bi bi-person-lines-fill"></i> Recent Students</div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    @if (Model.RecentStudents != null && Model.RecentStudents.Any()) {
+                        foreach (var s in Model.RecentStudents) {
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">@s.Name</h6>
+                                    <small class="text-muted">@s.RegisterNumber | @s.Department</small>
+                                </div>
+                                <a asp-controller="Students" asp-action="Details" asp-route-id="@s.StudentId" class="btn btn-sm btn-outline-info">View</a>
+                            </div>
+                        }
+                    } else {
+                        <div class="p-3 text-muted">No students found.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-custom h-100">
+            <div class="card-header bg-white"><i class="bi bi-pie-chart-fill"></i> Student Result Overview</div>
+            <div class="card-body d-flex justify-content-center align-items-center" style="height: 350px;">
+                <canvas id="resultChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-custom">
+            <div class="card-header bg-white"><i class="bi bi-bar-chart-fill"></i> Grade Distribution</div>
+            <div class="card-body d-flex justify-content-center align-items-center" style="height: 400px;">
+                <canvas id="gradeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // Doughnut Chart Data
+            var passCount = @Model.PassedStudents;
+            var failCount = @Model.FailedStudents;
+            
+            var ctxResult = document.getElementById('resultChart').getContext('2d');
+            var resultChart = new Chart(ctxResult, {
+                type: 'doughnut',
+                data: {
+                    labels: ['PASS', 'FAIL'],
+                    datasets: [{
+                        data: [passCount, failCount],
+                        backgroundColor: ['#198754', '#dc3545'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Bar Chart Data
+            var grades = ['A+', 'A', 'B+', 'B', 'C', 'D', 'F'];
+            var counts = [
+                @(Model.GradeDistribution.ContainsKey("A+") ? Model.GradeDistribution["A+"] : 0),
+                @(Model.GradeDistribution.ContainsKey("A") ? Model.GradeDistribution["A"] : 0),
+                @(Model.GradeDistribution.ContainsKey("B+") ? Model.GradeDistribution["B+"] : 0),
+                @(Model.GradeDistribution.ContainsKey("B") ? Model.GradeDistribution["B"] : 0),
+                @(Model.GradeDistribution.ContainsKey("C") ? Model.GradeDistribution["C"] : 0),
+                @(Model.GradeDistribution.ContainsKey("D") ? Model.GradeDistribution["D"] : 0),
+                @(Model.GradeDistribution.ContainsKey("F") ? Model.GradeDistribution["F"] : 0)
+            ];
+
+            var ctxGrade = document.getElementById('gradeChart').getContext('2d');
+            var gradeChart = new Chart(ctxGrade, {
+                type: 'bar',
+                data: {
+                    labels: grades,
+                    datasets: [{
+                        label: 'Total Grades',
+                        data: counts,
+                        backgroundColor: '#4361ee',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+        });
+    </script>
+}

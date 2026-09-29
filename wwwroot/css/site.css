@@ -1,0 +1,140 @@
+
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --success-color: #4cc9f0;
+    --danger-color: #f72585;
+    --bg-color: #f8f9fa;
+    --sidebar-bg: #2b2d42;
+    --sidebar-color: #edf2f4;
+    --sidebar-hover: #4361ee;
+    --card-bg: #ffffff;
+    --text-main: #2b2d42;
+    --text-muted: #8d99ae;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Sidebar Styling */
+#wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-color);
+    transition: margin 0.25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 1.5rem 1.25rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.list-group-item-sidebar {
+    background-color: transparent;
+    color: var(--sidebar-color);
+    border: none;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.list-group-item-sidebar:hover, .list-group-item-sidebar:focus {
+    background-color: var(--sidebar-hover);
+    color: #fff;
+    text-decoration: none;
+}
+
+.list-group-item-sidebar i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+#page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+/* Cards & Layout */
+.card-custom {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.card-custom .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-weight: 600;
+}
+
+.stat-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+.stat-card.success { border-left-color: var(--success-color); }
+.stat-card.danger { border-left-color: var(--danger-color); }
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Print Styles */
+@media print {
+    #sidebar-wrapper, #menu-toggle, .d-print-none {
+        display: none !important;
+    }
+    #page-content-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    body, .card-custom {
+        background-color: white !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #menu-toggle {
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+}

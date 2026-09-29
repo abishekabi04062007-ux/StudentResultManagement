@@ -1,0 +1,115 @@
+@model StudentResultManagement.Models.Student
+@{
+    ViewData["Title"] = "Student Result";
+}
+
+<div class="mt-4 mb-4 d-print-none text-end">
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    <button onclick="window.print()" class="btn btn-primary"><i class="bi bi-printer"></i> Print Result</button>
+</div>
+
+<div id="printableArea" class="card card-custom p-5">
+    <div class="text-center mb-5 border-bottom pb-4">
+        <h1 class="display-6 fw-bold" style="color: var(--primary-color);">STUDENT RESULT</h1>
+        <p class="text-muted mb-0">Official Academic Transcript</p>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <table class="table table-sm table-borderless">
+                <tr><th style="width: 150px;">Register Number:</th><td class="fw-bold fs-5">@Model.RegisterNumber</td></tr>
+                <tr><th>Student Name:</th><td class="fs-5">@Model.Name</td></tr>
+                <tr><th>Date of Birth:</th><td>@Model.DateOfBirth.ToString("dd-MMM-yyyy")</td></tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-sm table-borderless">
+                <tr><th style="width: 150px;">Department:</th><td class="fw-bold">@Model.Department</td></tr>
+                <tr><th>Year:</th><td>@Model.Year</td></tr>
+                <tr><th>Semester:</th><td>@Model.Semester</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <h5 class="mb-3">Academic Performance</h5>
+    <table class="table table-bordered align-middle text-center mb-5">
+        <thead class="table-light">
+            <tr>
+                <th class="text-start">Subject Code</th>
+                <th class="text-start">Subject Name</th>
+                <th>Internal</th>
+                <th>External</th>
+                <th>Total</th>
+                <th>Grade</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var mark in Model.Marks)
+            {
+                <tr>
+                    <td class="text-start fw-bold">@mark.Subject?.SubjectCode</td>
+                    <td class="text-start">@mark.Subject?.SubjectName</td>
+                    <td>@mark.InternalMark</td>
+                    <td>@mark.ExternalMark</td>
+                    <td class="fw-bold">@mark.Total</td>
+                    <td><span class="badge bg-secondary">@mark.Grade</span></td>
+                    <td>
+                        @if(mark.ResultStatus == "PASS")
+                        {
+                            <span class="badge bg-success">PASS</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">FAIL</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row mt-4 align-items-center">
+        <div class="col-md-6">
+            <table class="table table-sm table-borderless">
+                <tr><th>Total Marks:</th><td class="fw-bold">@ViewBag.TotalMarks / @ViewBag.MaxMarks</td></tr>
+                <tr><th>Percentage:</th><td class="fw-bold">@ViewBag.Percentage %</td></tr>
+                <tr><th>Passed Subjects:</th><td>@ViewBag.PassedSubjects</td></tr>
+                <tr><th>Failed Subjects:</th><td>@ViewBag.FailedSubjects</td></tr>
+            </table>
+        </div>
+        <div class="col-md-6 text-end">
+            <div class="card d-inline-block border-2 p-3 text-center @(ViewBag.OverallResult == "PASS" ? "border-success bg-light" : "border-danger bg-light")">
+                <h6 class="text-muted mb-1">OVERALL RESULT</h6>
+                <h2 class="mb-0 fw-bold @(ViewBag.OverallResult == "PASS" ? "text-success" : "text-danger")">@ViewBag.OverallResult</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printableArea, #printableArea * {
+        visibility: visible;
+    }
+    #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .d-print-none {
+        display: none !important;
+    }
+    .badge {
+        border: 1px solid #000;
+        color: #000 !important;
+        background-color: transparent !important;
+    }
+}
+</style>

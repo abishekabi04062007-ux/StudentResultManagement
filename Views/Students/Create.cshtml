@@ -1,0 +1,116 @@
+@model StudentResultManagement.Models.Student
+@{
+    ViewData["Title"] = "Create Student";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-person-plus"></i> Create Student</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <h5 class="mb-3 text-primary border-bottom pb-2">Student Information</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="RegisterNumber" class="form-label">Register Number</label>
+                    <input asp-for="RegisterNumber" class="form-control" placeholder="e.g. 2026001" />
+                    <span asp-validation-for="RegisterNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Name" class="form-label">Full Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+                    <input asp-for="DateOfBirth" class="form-control" type="date" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <h5 class="mb-3 mt-4 text-primary border-bottom pb-2">Academic Information</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Department" class="form-label">Department</label>
+                    <select asp-for="Department" class="form-select">
+                        <option value="">Select Department</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Year" class="form-label">Year</label>
+                    <select asp-for="Year" class="form-select">
+                        <option value="">Select Year</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Semester" class="form-label">Semester</label>
+                    <select asp-for="Semester" class="form-select">
+                        <option value="">Select Semester</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                    <span asp-validation-for="Semester" class="text-danger"></span>
+                </div>
+            </div>
+
+            <h5 class="mb-3 mt-4 text-primary border-bottom pb-2">Contact Information</h5>
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save"></i> Create Student</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

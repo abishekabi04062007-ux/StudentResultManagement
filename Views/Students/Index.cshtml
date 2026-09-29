@@ -1,0 +1,102 @@
+@model IEnumerable<StudentResultManagement.Models.Student>
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-people"></i> Students Directory</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Student</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card card-custom">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="mb-4">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search by Name or Reg No..." />
+                </div>
+                <div class="col-md-2">
+                    <select name="department" class="form-select">
+                        <option value="">All Depts</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <div class="col-md-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">Clear</a>
+                </div>
+            </div>
+        </form>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+                No students found.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reg Number</th>
+                            <th>Name</th>
+                            <th>Dept / Year / Sem</th>
+                            <th>Gender</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td class="fw-bold">@item.RegisterNumber</td>
+                                <td>
+                                    <div>@item.Name</div>
+                                    <div class="text-muted small">@item.Email</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@item.Department</span>
+                                    <span class="badge bg-secondary">Yr @item.Year</span>
+                                    <span class="badge bg-info">Sem @item.Semester</span>
+                                </td>
+                                <td>
+                                    <span class="badge @(item.Gender == "Male" ? "bg-primary" : item.Gender == "Female" ? "bg-danger" : "bg-secondary")">@item.Gender</span>
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
